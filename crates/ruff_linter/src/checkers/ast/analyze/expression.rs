@@ -319,7 +319,7 @@ pub(crate) fn expression(expr: &Expr, checker: &mut Checker) {
                 numpy::rules::numpy_2_0_deprecation(checker, expr);
             }
             if checker.enabled(Rule::DeprecatedMockImport) {
-                pyupgrade::rules::deprecated_mock_attribute(checker, expr);
+                pyupgrade::rules::deprecated_mock_attribute(checker, attribute);
             }
             if checker.enabled(Rule::SixPY3) {
                 flake8_2020::rules::name_or_attribute(checker, expr);
@@ -976,7 +976,6 @@ pub(crate) fn expression(expr: &Expr, checker: &mut Checker) {
             if checker.enabled(Rule::UnsortedDunderAll) {
                 ruff::rules::sort_dunder_all_extend_call(checker, call);
             }
-
             if checker.enabled(Rule::DefaultFactoryKwarg) {
                 ruff::rules::default_factory_kwarg(checker, call);
             }

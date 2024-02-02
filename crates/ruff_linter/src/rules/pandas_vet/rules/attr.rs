@@ -2,6 +2,7 @@ use ruff_diagnostics::Violation;
 use ruff_diagnostics::{Diagnostic, DiagnosticKind};
 use ruff_macros::{derive_message_formats, violation};
 use ruff_python_ast::{self as ast, Expr, ExprContext};
+use ruff_python_semantic::Modules;
 use ruff_text_size::Ranged;
 
 use crate::checkers::ast::Checker;
@@ -45,6 +46,10 @@ impl Violation for PandasUseOfDotValues {
 }
 
 pub(crate) fn attr(checker: &mut Checker, attribute: &ast::ExprAttribute) {
+    if !checker.semantic().seen(Modules::PANDAS) {
+        return;
+    }
+
     // Avoid, e.g., `x.values = y`.
     if matches!(attribute.ctx, ExprContext::Store | ExprContext::Del) {
         return;
